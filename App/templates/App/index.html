@@ -1,0 +1,66 @@
+{% extends 'App/base.html' %}
+
+{% load static %}
+
+{% block title %} Inicio {% endblock title %}
+
+{% block main %}
+<!-- Header-->
+<header class="masthead text-center text-white">
+    <div class="masthead-content">
+        <div class="container px-5">
+            <h1 class="masthead-heading mb-0">Tu herramienta definitiva<br>para gestionar proyectos</h1>
+            <h2 class="masthead-subheading mb-2"style="font-size: 1.5rem; font-weight: 300;" >Organiza, colabora y alcanza tus metas de manera simple y efectiva</h2>
+            <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#scroll">Conoce más</a>
+        </div>
+    </div>
+</header>
+<!-- Content section 1-->
+<section id="scroll">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <div class="p-5"><img class="img-fluid rounded-circle" src="{% static 'App/assets/img/01.jpg' %}" alt="..." /></div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="p-5">
+                    <h2 class="display-4">Crea tu espacio de trabajo...</h2>
+                    <p>¡Haz realidad tus ideas! Diseña un espacio exclusivo para organizar y gestionar todos tus proyectos en un solo lugar. Con nuestra herramienta, tendrás el control total para empezar a construir desde cero.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Content section 2-->
+<section>
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <div class="col-lg-6">
+                <div class="p-5"><img class="img-fluid rounded-circle" src="{% static 'App/assets/img/02.jpg' %}" alt="..." /></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="p-5">
+                    <h2 class="display-4">Gestiona tus proyectos a tu manera...</h2>
+                    <p>Convierte tus objetivos en acciones concretas. Crea proyectos personalizados, planifica cada detalle y trabaja a tu ritmo. Nuestra plataforma se adapta a tus necesidades y estilo de trabajo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Content section 3-->
+<section>
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <div class="p-5"><img class="img-fluid rounded-circle" src="{% static 'App/assets/img/03.jpg' %}" alt="..." /></div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="p-5">
+                    <h2 class="display-4">Colabora con tu equipo...</h2>
+                    <p>¡No trabajes solo! Invita a compañeros a tu espacio de trabajo, asigna tareas, comparte ideas y mantén un seguimiento claro del progreso. Juntos podrán lograr grandes cosas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main %}
