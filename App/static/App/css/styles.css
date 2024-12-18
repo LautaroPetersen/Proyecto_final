@@ -10860,7 +10860,7 @@ header.masthead {
   overflow: hidden;
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
-  background: url("/static/App/assets/img/coworking.jpg") no-repeat center center;
+  background: url("/static/App/assets/img/coworking.jpg")  no-repeat center center;
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: scroll;

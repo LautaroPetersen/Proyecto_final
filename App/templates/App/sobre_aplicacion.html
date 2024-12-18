@@ -1,0 +1,89 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Sobre la aplicación{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <!-- Encabezado principal -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">¿Qué puedes hacer con nuestra aplicación?</h1>
+        <p class="lead text-muted">Gestiona tus proyectos de manera simple, colaborativa y efectiva.</p>
+    </div>
+
+    <!-- Características en Tarjetas -->
+    <div class="row text-center g-4">
+        <!-- Crear Espacios de Trabajo -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body">
+                    <i class="fas fa-folder-open fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Crea tu espacio de trabajo</h5>
+                    <p class="card-text">Organiza tus proyectos en un espacio único y flexible. Cada espacio es privado y controlado por ti.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestionar Proyectos -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body">
+                    <i class="fas fa-tasks fa-3x mb-3 text-success"></i>
+                    <h5 class="card-title fw-bold">Gestiona tus proyectos</h5>
+                    <p class="card-text">Crea proyectos, asigna tareas y lleva un seguimiento del progreso a tu manera y en tu tiempo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colaborar con el Equipo -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body">
+                    <i class="fas fa-users fa-3x mb-3 text-warning"></i>
+                    <h5 class="card-title fw-bold">Colabora con tu equipo</h5>
+                    <p class="card-text">Invita a tus compañeros a participar en tus proyectos, asigna roles y trabajen juntos hacia el éxito.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nueva Sección: ¿Cómo funciona? -->
+    <div class="mt-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">¿Cómo funciona nuestra herramienta?</h2>
+            <p class="text-muted">Sigue estos simples pasos para aprovechar al máximo nuestra aplicación.</p>
+        </div>
+        <div class="row text-center g-4">
+            <!-- Paso 1 -->
+            <div class="col-md-3">
+                <i class="fas fa-user-plus fa-3x text-info mb-3"></i>
+                <h5 class="fw-bold">1. Regístrate</h5>
+                <p class="text-muted">Crea una cuenta gratuita en pocos minutos.</p>
+            </div>
+            <!-- Paso 2 -->
+            <div class="col-md-3">
+                <i class="fas fa-folder-plus fa-3x text-success mb-3"></i>
+                <h5 class="fw-bold">2. Crea tu espacio</h5>
+                <p class="text-muted">Genera un espacio de trabajo para tus proyectos.</p>
+            </div>
+            <!-- Paso 3 -->
+            <div class="col-md-3">
+                <i class="fas fa-user-friends fa-3x text-warning mb-3"></i>
+                <h5 class="fw-bold">3. Añade colaboradores</h5>
+                <p class="text-muted">Invita a otros usuarios a participar en tu proyecto.</p>
+            </div>
+            <!-- Paso 4 -->
+            <div class="col-md-3">
+                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                <h5 class="fw-bold">4. Gestiona y crece</h5>
+                <p class="text-muted">Asigna tareas, comenta avances y alcanza tus metas.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección final con llamada a la acción -->
+    <div class="text-center mt-5">
+        <h2 class="fw-bold mb-3">Comienza a organizar tus proyectos hoy mismo</h2>
+        <a href="{% url 'registro' %}" class="btn btn-primary btn-lg rounded-pill">Regístrate ahora</a>
+    </div>
+</div>
+{% endblock main %}
