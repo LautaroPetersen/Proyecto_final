@@ -1,8 +1,16 @@
-<body>
+{% extends 'App/base.html' %}
+
+{% block title %}Elegir Avatar{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h2 class="mb-4">Perfil de {{ user.username }}</h2>
+
     <h3>Cargar Avatar</h3>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ mi_form.as_p }}
         <input type="submit" value="Actualizar">
     </form>
-<body>
+</div>
+{% endblock main %}

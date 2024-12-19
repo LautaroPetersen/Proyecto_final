@@ -1,18 +1,28 @@
 {% extends 'App/base.html' %}
 
-{% load static %}
-
-{% block title %} Login {% endblock title %}
+{% block title %}Editar Perfil{% endblock title %}
 
 {% block main %}
 <div class="container mt-5 pt-5">
-    <h2 class="mb-4">Editar perfil de {{usuario}}</h2>
+    <h2 class="mb-4">Editar perfil de {{ user.username }}</h2>
     <form method="post" class="mt-3" enctype="multipart/form-data">
         {% csrf_token %}
         {{ mi_form.as_table }}
         <button type="submit" class="btn btn-primary">Actualizar</button>
     </form>
 
-    <a class="btn btn-primary btn-l rounded-pill mt-1" href="{% url 'CambiarPass' %}">Cambiar password</a>
+    <!-- Botón para cambiar la contraseña -->
+    <a class="btn btn-primary btn-l rounded-pill mt-3" href="{% url 'CambiarPass' %}">Cambiar password</a>
+
+    <!-- Mostrar avatar actual si existe -->
+    {% if user.avatar %}
+        <h3 class="mt-4">Avatar Actual</h3>
+        <img src="{{ user.avatar.imagen.url }}" alt="Avatar" class="img-fluid" style="max-width: 150px;">
+    {% else %}
+        <p class="mt-4">No tienes un avatar configurado.</p>
+    {% endif %}
+
+    <!-- Botón para agregar o cambiar avatar -->
+    <a class="btn btn-info mt-3" href="{% url 'AgregarAvatar' %}">Cargar Avatar</a>
 </div>
-{% endblock main %} 
+{% endblock main %}
