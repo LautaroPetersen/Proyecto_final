@@ -1,0 +1,21 @@
+{% extends 'App/base.html' %}
+
+{% load static %}
+
+{% block title %} Cambiar Contraseña {% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5"></div>
+<h2 class="mb-4">Cambiar Contraseña</h2>
+
+    <form action="" method="POST" class="mt-3">
+        {% csrf_token %}
+
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Actualizar">
+
+    </form>
+</div>
+{% endblock main %} 

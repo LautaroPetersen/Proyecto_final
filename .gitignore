@@ -8,3 +8,4 @@ Pipfile.lock
 
 # Deberíamos agregar la base de datos con:
 # db.sqlite3
+media/**

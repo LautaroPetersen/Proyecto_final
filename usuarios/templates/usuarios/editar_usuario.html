@@ -1,0 +1,18 @@
+{% extends 'App/base.html' %}
+
+{% load static %}
+
+{% block title %} Login {% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h2 class="mb-4">Editar perfil de {{usuario}}</h2>
+    <form method="post" class="mt-3" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ mi_form.as_table }}
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+
+    <a class="btn btn-primary btn-l rounded-pill mt-1" href="{% url 'CambiarPass' %}">Cambiar password</a>
+</div>
+{% endblock main %} 

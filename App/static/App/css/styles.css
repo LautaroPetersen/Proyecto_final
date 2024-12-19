@@ -385,7 +385,9 @@ button,
 [type=reset],
 [type=submit] {
   -webkit-appearance: button;
+  appearance: button;
 }
+
 button:not(:disabled),
 [type=button]:not(:disabled),
 [type=reset]:not(:disabled),
@@ -443,6 +445,7 @@ legend + * {
 [type=search] {
   outline-offset: -2px;
   -webkit-appearance: textfield;
+  appearance: textfield;
 }
 
 /* rtl:raw:
@@ -464,6 +467,7 @@ legend + * {
 ::file-selector-button {
   font: inherit;
   -webkit-appearance: button;
+  appearance: button; 
 }
 
 output {
@@ -589,10 +593,11 @@ progress {
 }
 
 .blockquote-footer {
-  margin-top: -1rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
   font-size: 0.875em;
   color: #6c757d;
+  padding: 1rem 0;
 }
 .blockquote-footer::before {
   content: "— ";
