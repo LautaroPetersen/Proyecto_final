@@ -1,0 +1,34 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Detalle del Espacio{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <!-- Detalle del Espacio -->
+    <h1>{{ espacio.nombre }}</h1>
+    <p>{{ espacio.descripcion }}</p>
+    <small>Administrador: {{ espacio.administrador.username }}</small>
+
+    <!-- Lista de Proyectos -->
+    <h3 class="mt-4">Proyectos</h3>
+    <ul class="list-group">
+        {% for proyecto in espacio.proyectos.all %}
+        <li class="list-group-item">
+            <h5>{{ proyecto.nombre }}</h5>
+            <p>{{ proyecto.descripcion }}</p>
+            <small class="text-muted">Creado el: {{ proyecto.fecha_creacion|date:"d M Y" }}</small>
+            <!-- Botón para ver/editar el proyecto -->
+            <a href="{% url 'proyecto_detalle' proyecto.id %}" class="btn btn-primary btn-sm mt-2">Ver Proyecto</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No hay proyectos en este espacio.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Botón para crear un nuevo proyecto -->
+    <div class="mt-4">
+        <a href="{% url 'crear_proyecto' espacio.id %}" class="btn btn-success">Nuevo Proyecto</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+</div>
+{% endblock main %}

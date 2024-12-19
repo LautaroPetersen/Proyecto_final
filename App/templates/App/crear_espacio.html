@@ -1,0 +1,14 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Crear Espacio{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h1 class="mb-4">Crear un Nuevo Espacio</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Crear Espacio</button>
+    </form>
+</div>
+{% endblock main %}

@@ -1,0 +1,15 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Eliminar Tarea{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5 text-center">
+    <h1 class="mb-4 text-danger">¿Estás seguro que deseas eliminar esta tarea?</h1>
+    <p>{{ object.nombre }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'proyecto_detalle' object.proyecto.id %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock main %}

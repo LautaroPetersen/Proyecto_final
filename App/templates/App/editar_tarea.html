@@ -1,0 +1,14 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Editar Tarea{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h1 class="mb-4">Editar Tarea</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>
+{% endblock main %}

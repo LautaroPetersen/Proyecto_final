@@ -1,0 +1,23 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h1 class="mb-4">Espacios de Trabajo</h1>
+    <ul class="list-group">
+        {% for espacio in espacios %}
+        <li class="list-group-item">
+            <h5>{{ espacio.nombre }}</h5>
+            <p>{{ espacio.descripcion }}</p>
+            <small>Administrador: {{ espacio.administrador.username }}</small>
+            <a href="{% url 'espacio_detalle' espacio.id %}" class="btn btn-primary btn-sm float-end">Ver Detalle</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="text-end mb-3">
+    <a href="{% url 'crear_espacio' %}" class="btn btn-success">Nuevo Espacio</a>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,14 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Crear Proyecto{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h1 class="mb-4">Crear un Nuevo Proyecto</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+    </form>
+</div>
+{% endblock main %}
