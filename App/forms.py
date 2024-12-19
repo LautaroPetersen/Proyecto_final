@@ -1,5 +1,6 @@
 from django import forms
 from .models import EspacioTrabajo, Proyecto, Tarea
+from django.contrib.auth.models import User
 
 class EspacioTrabajoForm(forms.ModelForm):
     class Meta:
@@ -31,3 +32,31 @@ class TareaForm(forms.ModelForm):
             'asignado_a': forms.Select(attrs={'class': 'form-select'}),
             'fecha_vencimiento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        self.proyecto = kwargs.pop('proyecto', None)  # Recibe el proyecto en el constructor
+        super().__init__(*args, **kwargs)
+        if self.proyecto:
+            # Filtra los usuarios que son colaboradores del espacio del proyecto
+            self.fields['asignado_a'].queryset = self.proyecto.espacio.colaboradores.all()
+
+    def clean_asignado_a(self):
+        asignado_a = self.cleaned_data.get('asignado_a')
+        if asignado_a and self.proyecto and asignado_a not in self.proyecto.espacio.colaboradores.all():
+            raise forms.ValidationError("El usuario seleccionado no es colaborador de este espacio.")
+        return asignado_a
+
+
+
+class AgregarColaboradorPorUsuarioForm(forms.Form):
+    username = forms.CharField(
+        label="Nombre de Usuario",
+        max_length=150,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de usuario'}),
+    )
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if not User.objects.filter(username=username).exists():
+            raise forms.ValidationError("El usuario ingresado no existe.")
+        return username

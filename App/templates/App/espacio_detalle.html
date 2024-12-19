@@ -9,6 +9,18 @@
     <p>{{ espacio.descripcion }}</p>
     <small>Administrador: {{ espacio.administrador.username }}</small>
 
+    <!-- Lista de Colaboradores -->
+        <h3 class="mt-4">Colaboradores</h3>
+    <ul class="list-group">
+        {% for colaborador in espacio.colaboradores.all %}
+        <li class="list-group-item">
+            {{ colaborador.username }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No hay colaboradores asignados.</li>
+        {% endfor %}
+    </ul>
+
     <!-- Lista de Proyectos -->
     <h3 class="mt-4">Proyectos</h3>
     <ul class="list-group">
@@ -27,6 +39,7 @@
 
     <!-- Botón para crear un nuevo proyecto -->
     <div class="mt-4">
+        <a href="{% url 'agregar_colaborador_manual' espacio.id %}" class="btn btn-info">Agregar Colaborador</a>
         <a href="{% url 'crear_proyecto' espacio.id %}" class="btn btn-success">Nuevo Proyecto</a>
         <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver al Dashboard</a>
     </div>

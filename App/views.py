@@ -5,8 +5,9 @@ from .models import EspacioTrabajo, Proyecto, Tarea
 from django.db.models import Q  
 from django.views.generic import DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .forms import EspacioTrabajoForm, ProyectoForm, TareaForm
-
+from .forms import EspacioTrabajoForm, ProyectoForm, TareaForm,AgregarColaboradorPorUsuarioForm
+from django.views.generic.edit import FormView
+from django.contrib.auth.models import User
 
 
 
@@ -78,15 +79,21 @@ class CrearTareaView(LoginRequiredMixin, CreateView):
     form_class = TareaForm
     template_name = "app/crear_tarea.html"
 
-    def form_valid(self, form):
-        # Vincular la tarea al proyecto actual
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
         proyecto = Proyecto.objects.get(pk=self.kwargs['proyecto_id'])
-        form.instance.proyecto = proyecto
+        kwargs['proyecto'] = proyecto  # Pasa el proyecto al formulario
+        return kwargs
+
+    def form_valid(self, form):
+        # Asigna el proyecto al que pertenece la tarea
+        proyecto = Proyecto.objects.get(pk=self.kwargs['proyecto_id'])
+        form.instance.proyecto = proyecto  # Relacionar la tarea con el proyecto
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Redirige al detalle del proyecto después de crear la tarea
         return reverse_lazy('proyecto_detalle', kwargs={'pk': self.kwargs['proyecto_id']})
+
 
 class ProyectoDetalleView(LoginRequiredMixin, DetailView):
     model = Proyecto
@@ -107,3 +114,30 @@ class EliminarTareaView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('proyecto_detalle', kwargs={'pk': self.object.proyecto.id})
+    
+class AgregarColaboradorPorUsuarioView(LoginRequiredMixin, FormView):
+    template_name = "app/agregar_colaborador_manual.html"
+    form_class = AgregarColaboradorPorUsuarioForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['espacio_id'] = self.kwargs['espacio_id']  # Pasar espacio_id al contexto
+        return context
+
+    def form_valid(self, form):
+        espacio = EspacioTrabajo.objects.get(pk=self.kwargs['espacio_id'])
+        username = form.cleaned_data['username']
+        colaborador = User.objects.get(username=username)
+
+        # Verifica que el usuario no esté ya en el espacio
+        if colaborador in espacio.colaboradores.all():
+            form.add_error('username', "Este usuario ya es colaborador de este espacio.")
+            return self.form_invalid(form)
+
+        # Agregar colaborador al espacio
+        espacio.colaboradores.add(colaborador)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('espacio_detalle', kwargs={'pk': self.kwargs['espacio_id']})
+
