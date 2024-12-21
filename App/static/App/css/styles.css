@@ -10924,3 +10924,101 @@ header.masthead .bg-circle-4 {
     font-size: 4rem;
   }
 }
+
+/* Tarjeta para Administrador */
+.card.administrador {
+  background-color: #007bff !important; /* Azul brillante */
+  color: #fff !important; /* Texto blanco */
+  border: 1px solid #0056b3 !important;
+}
+
+/* Tarjeta para Colaborador */
+.card.colaborador {
+  background-color: #f8f9fa !important; /* Fondo claro */
+  color: #212529 !important; /* Texto oscuro */
+  border: 1px solid #ced4da !important;
+}
+
+/* Sombra para mejor visualización */
+.card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Efecto hover para ambas tarjetas */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones dentro de las tarjetas */
+.card .btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+}
+.card .btn-outline-light:hover {
+  background-color: #fff;
+  color: #007bff;
+}
+
+.card .btn-outline-warning {
+  border-color: #ffc107;
+  color: #ffc107;
+}
+.card .btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.card .btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+.card .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Botones en Tarjetas de Espacios de Trabajo */
+.card .btn {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+}
+
+/* Botón en Tarjeta de Administrador */
+.card.administrador .btn {
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.card.administrador .btn:hover {
+  background-color: #fff;
+  color: #007bff;
+}
+
+/* Botón en Tarjeta de Colaborador */
+.card.colaborador .btn {
+  border: 1px solid #007bff;
+  color: #007bff;
+  background-color: #fff;
+}
+
+.card.colaborador .btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Botón en Tarjeta sin Rol (por si acaso) */
+.card.default .btn {
+  border: 1px solid #6c757d;
+  color: #6c757d;
+  background-color: #fff;
+}
+
+.card.default .btn:hover {
+  background-color: #6c757d;
+  color: #fff;
+}

@@ -5,19 +5,29 @@
 {% block main %}
 <div class="container mt-5 pt-5">
     <h1 class="mb-4">Espacios de Trabajo</h1>
-    <ul class="list-group">
+    <div class="row">
         {% for espacio in espacios %}
-        <li class="list-group-item">
-            <h5>{{ espacio.nombre }}</h5>
-            <p>{{ espacio.descripcion }}</p>
-            <small>Administrador: {{ espacio.administrador.username }}</small>
-            <a href="{% url 'espacio_detalle' espacio.id %}" class="btn btn-primary btn-sm float-end">Ver Detalle</a>
-        </li>
+        <div class="col-md-4 mb-4">
+            <div class="card {% if espacio.administrador == user %}administrador{% else %}colaborador{% endif %} shadow">
+                <div class="card-body">
+                    <h5 class="card-title">{{ espacio.nombre }}</h5>
+                    <p class="card-text">{{ espacio.descripcion }}</p>
+                    <small>
+                        Administrador: {{ espacio.administrador.username }}
+                    </small>
+                    <div class="mt-3">
+                        <a href="{% url 'espacio_detalle' espacio.id %}" class="btn btn-sm btn-outline-light">Ver Detalle</a>
+                        {% if espacio.administrador == user %}
+                        {# <a href="#" class="btn btn-sm btn-outline-warning">Editar</a> #}
+                        {# <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a> #}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No tienes espacios de trabajo asignados.</p>
         {% endfor %}
-    </ul>
+    </div>
 </div>
-<div class="text-end mb-3">
-    <a href="{% url 'crear_espacio' %}" class="btn btn-success">Nuevo Espacio</a>
-</div>
-
 {% endblock main %}
