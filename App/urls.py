@@ -1,6 +1,6 @@
 from django.urls import path
 from App import views
-from .views import DashboardView, EspacioDetalleView, CrearEspacioView, CrearProyectoView, CrearTareaView, ProyectoDetalleView, EditarTareaView, EliminarTareaView , AgregarColaboradorPorUsuarioView, EditarProyectoView, EliminarProyectoView, EditarEspacioView, EliminarEspacioView
+from .views import DashboardView, EspacioDetalleView, CrearEspacioView, CrearProyectoView, CrearTareaView, ProyectoDetalleView, EditarTareaView, EliminarTareaView , AgregarColaboradorPorUsuarioView, EditarProyectoView, EliminarProyectoView, EditarEspacioView, EliminarEspacioView, ListaUsuariosView
 
 urlpatterns = [
     path('', views.inicio, name="Inicio"),
@@ -19,6 +19,7 @@ urlpatterns = [
     path('proyectos/<int:pk>/eliminar/', EliminarProyectoView.as_view(), name='eliminar_proyecto'),
     path('espacios/<int:pk>/editar/', EditarEspacioView.as_view(), name='editar_espacio'),
     path('espacios/<int:pk>/eliminar/', EliminarEspacioView.as_view(), name='eliminar_espacio'),
+    path('usuarios/lista/', ListaUsuariosView.as_view(), name='lista_usuarios'),
 ]
 
 

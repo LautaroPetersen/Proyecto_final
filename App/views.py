@@ -226,5 +226,16 @@ class EliminarEspacioView(LoginRequiredMixin, DeleteView):
         return reverse_lazy('dashboard')
     
 
+class ListaUsuariosView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = "App/lista_usuarios.html"
+    context_object_name = 'usuarios'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verificar si el usuario es superusuario
+        if not request.user.is_superuser:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
 
 
