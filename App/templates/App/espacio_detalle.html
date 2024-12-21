@@ -9,6 +9,13 @@
     <p>{{ espacio.descripcion }}</p>
     <small>Administrador: {{ espacio.administrador.username }}</small>
 
+    {% if espacio.administrador == user %}
+    <div class="mt-3">
+        <a href="{% url 'editar_espacio' espacio.id %}" class="btn btn-warning">Editar Espacio</a>
+        <a href="{% url 'eliminar_espacio' espacio.id %}" class="btn btn-danger">Eliminar Espacio</a>
+    </div>
+    {% endif %}
+
     <!-- Lista de Colaboradores -->
         <h3 class="mt-4">Colaboradores</h3>
     <ul class="list-group">

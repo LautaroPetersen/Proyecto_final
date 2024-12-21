@@ -1,6 +1,6 @@
 from django.urls import path
 from App import views
-from .views import DashboardView, EspacioDetalleView, CrearEspacioView, CrearProyectoView, CrearTareaView, ProyectoDetalleView, EditarTareaView, EliminarTareaView , AgregarColaboradorPorUsuarioView
+from .views import DashboardView, EspacioDetalleView, CrearEspacioView, CrearProyectoView, CrearTareaView, ProyectoDetalleView, EditarTareaView, EliminarTareaView , AgregarColaboradorPorUsuarioView, EditarProyectoView, EliminarProyectoView, EditarEspacioView, EliminarEspacioView
 
 urlpatterns = [
     path('', views.inicio, name="Inicio"),
@@ -15,6 +15,10 @@ urlpatterns = [
     path('tareas/<int:pk>/editar/', EditarTareaView.as_view(), name='editar_tarea'),
     path('tareas/<int:pk>/eliminar/', EliminarTareaView.as_view(), name='eliminar_tarea'),
     path('espacios/<int:espacio_id>/colaboradores/agregar-manual/', AgregarColaboradorPorUsuarioView.as_view(), name='agregar_colaborador_manual'),
+    path('proyectos/<int:pk>/editar/', EditarProyectoView.as_view(), name='editar_proyecto'),
+    path('proyectos/<int:pk>/eliminar/', EliminarProyectoView.as_view(), name='eliminar_proyecto'),
+    path('espacios/<int:pk>/editar/', EditarEspacioView.as_view(), name='editar_espacio'),
+    path('espacios/<int:pk>/eliminar/', EliminarEspacioView.as_view(), name='eliminar_espacio'),
 ]
 
 

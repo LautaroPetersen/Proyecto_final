@@ -9,6 +9,13 @@
     <p>{{ proyecto.descripcion }}</p>
     <small class="text-muted">Creado el: {{ proyecto.fecha_creacion|date:"d M Y" }}</small>
 
+    {% if proyecto.espacio.administrador == user %}
+    <div class="mt-3">
+        <a href="{% url 'editar_proyecto' proyecto.id %}" class="btn btn-warning">Editar Proyecto</a>
+        <a href="{% url 'eliminar_proyecto' proyecto.id %}" class="btn btn-danger">Eliminar Proyecto</a>
+    </div>
+    {% endif %}
+    
     <!-- Lista de Tareas -->
     <h3 class="mt-4">Tareas</h3>
     <ul class="list-group">

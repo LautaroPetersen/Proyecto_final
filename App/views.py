@@ -8,6 +8,9 @@ from django.urls import reverse_lazy
 from .forms import EspacioTrabajoForm, ProyectoForm, TareaForm,AgregarColaboradorPorUsuarioForm
 from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
+
 
 
 
@@ -26,6 +29,8 @@ def sobre_aplicacion(request):
 def sobre_mi(request):
     return render(request, 'app/sobre_mi.html')
 
+def custom_403_view(request, exception):
+    return render(request, '403.html', status=403)
 
 
 class DashboardView(LoginRequiredMixin, ListView):
@@ -40,7 +45,7 @@ class DashboardView(LoginRequiredMixin, ListView):
             Q(administrador=usuario) | Q(colaboradores=usuario)
         ).distinct()
     
-class EspacioDetalleView(DetailView):
+class EspacioDetalleView(LoginRequiredMixin, DetailView):
     model = EspacioTrabajo
     template_name = "app/espacio_detalle.html"
     context_object_name = "espacio"
@@ -105,6 +110,13 @@ class EditarTareaView(LoginRequiredMixin, UpdateView):
     form_class = TareaForm
     template_name = "app/editar_tarea.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        tarea = self.get_object()
+        # Verificar si el usuario es el dueño del proyecto asociado
+        if tarea.proyecto.espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('proyecto_detalle', kwargs={'pk': self.object.proyecto.id})
     
@@ -112,12 +124,29 @@ class EliminarTareaView(LoginRequiredMixin, DeleteView):
     model = Tarea
     template_name = "app/eliminar_tarea.html"  
 
+    def dispatch(self, request, *args, **kwargs):
+        tarea = self.get_object()
+        # Verificar si el usuario es el dueño del proyecto asociado
+        if tarea.proyecto.espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('proyecto_detalle', kwargs={'pk': self.object.proyecto.id})
     
 class AgregarColaboradorPorUsuarioView(LoginRequiredMixin, FormView):
     template_name = "app/agregar_colaborador_manual.html"
     form_class = AgregarColaboradorPorUsuarioForm
+
+    def dispatch(self, request, *args, **kwargs):
+        # Obtener el espacio de trabajo
+        espacio = EspacioTrabajo.objects.get(pk=self.kwargs['espacio_id'])
+        
+        # Verificar si el usuario es el administrador del espacio
+        if espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -129,7 +158,7 @@ class AgregarColaboradorPorUsuarioView(LoginRequiredMixin, FormView):
         username = form.cleaned_data['username']
         colaborador = User.objects.get(username=username)
 
-        # Verifica que el usuario no esté ya en el espacio
+        # Verificar que el usuario no esté ya en el espacio
         if colaborador in espacio.colaboradores.all():
             form.add_error('username', "Este usuario ya es colaborador de este espacio.")
             return self.form_invalid(form)
@@ -140,4 +169,62 @@ class AgregarColaboradorPorUsuarioView(LoginRequiredMixin, FormView):
 
     def get_success_url(self):
         return reverse_lazy('espacio_detalle', kwargs={'pk': self.kwargs['espacio_id']})
+    
+class EditarProyectoView(LoginRequiredMixin, UpdateView):
+    model = Proyecto
+    template_name = "App/editar_proyecto.html"
+    fields = ['nombre', 'descripcion']
+
+    def dispatch(self, request, *args, **kwargs):
+        proyecto = self.get_object()
+        if proyecto.espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('proyecto_detalle', kwargs={'pk': self.object.id})
+    
+
+class EliminarProyectoView(LoginRequiredMixin, DeleteView):
+    model = Proyecto
+    template_name = "App/eliminar_proyecto.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        proyecto = self.get_object()
+        if proyecto.espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('espacio_detalle', kwargs={'pk': self.object.espacio.id})
+
+class EditarEspacioView(LoginRequiredMixin, UpdateView):
+    model = EspacioTrabajo
+    template_name = "App/editar_espacio.html"
+    fields = ['nombre', 'descripcion']
+
+    def dispatch(self, request, *args, **kwargs):
+        espacio = self.get_object()
+        if espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('espacio_detalle', kwargs={'pk': self.object.id})
+
+class EliminarEspacioView(LoginRequiredMixin, DeleteView):
+    model = EspacioTrabajo
+    template_name = "App/eliminar_espacio.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        espacio = self.get_object()
+        if espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard')
+    
+
+
 

@@ -1,10 +1,46 @@
-{% extends 'app/base.html' %}
+{% extends 'App/base.html' %}
 
-{% block title %}Sobre mí{% endblock title %}
+{% load static %}
+
+{% block title %}Sobre Mí{% endblock title %}
 
 {% block main %}
 <div class="container mt-5 pt-5">
-    <h1>Sobre mí</h1>
-    <p>Hola, soy Lautaro Petersen, el creador de esta aplicación. Mi objetivo es ayudarte a gestionar tus proyectos de forma simple y efectiva.</p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                <div class="row g-0">
+                    <!-- Columna de la Imagen -->
+                    <div class="col-md-4">
+                        <img src="{% static 'App/assets/img/about.png' %}" alt="Foto de Lautaro" class="img-fluid h-100 w-100 object-fit-cover">
+                    </div>
+                    
+                    <!-- Columna del Contenido -->
+                    <div class="col-md-8 bg-light p-4">
+                        <h2 class="card-title text-primary">¡Hola! 👋 Soy Lautaro Petersen</h2>
+                        <p class="card-text mt-3">
+                            Entusiasta de la programación y la tecnología, actualmente estoy cursando la <strong>Diplomatura en Data Science</strong> en <strong>Coderhouse</strong>.
+                        </p>
+                        <p class="card-text">
+                            Vivo en <strong>Buenos Aires, Argentina</strong>, y mi pasión es resolver problemas complejos mediante el uso de datos y tecnología.
+                        </p>
+                        <p class="card-text">
+                            En mi tiempo libre, disfruto aprendiendo nuevas tecnologías, construyendo aplicaciones útiles y explorando el fascinante mundo del <strong>Análisis de Datos</strong>.
+                        </p>
+                        <p class="card-text">
+                            ¡Gracias por visitar esta aplicación! 🚀 Espero que te sea útil y, si tienes alguna sugerencia, ¡estaré encantado de escucharla!
+                        </p>
+                        
+                        
+                        <div class="text-end mt-4">
+                            
+                            <a href="{% url 'Inicio' %}" class="btn btn-outline-secondary">Volver al Inicio</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock main %}
+

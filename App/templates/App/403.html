@@ -1,0 +1,11 @@
+{% extends 'App/base.html' %}
+
+{% block title %}Permiso Denegado{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5 text-center">
+    <h1 class="text-danger">403 - Permiso Denegado</h1>
+    <p>No tienes permiso para realizar esta acción.</p>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">Volver al Dashboard</a>
+</div>
+{% endblock main %}

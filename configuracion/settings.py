@@ -58,7 +58,7 @@ ROOT_URLCONF = 'configuracion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,4 +132,4 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = "/usuarios/login/"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
