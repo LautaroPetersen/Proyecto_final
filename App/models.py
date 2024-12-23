@@ -40,3 +40,12 @@ class Tarea(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Comentario(models.Model):
+    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, related_name='comentarios')
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    texto = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comentario de {self.autor.username} en {self.tarea.nombre}"

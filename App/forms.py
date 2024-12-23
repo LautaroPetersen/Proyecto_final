@@ -1,5 +1,5 @@
 from django import forms
-from .models import EspacioTrabajo, Proyecto, Tarea
+from .models import EspacioTrabajo, Proyecto, Tarea, Comentario
 from django.contrib.auth.models import User
 
 class EspacioTrabajoForm(forms.ModelForm):
@@ -49,6 +49,7 @@ class TareaForm(forms.ModelForm):
 
 
 class AgregarColaboradorPorUsuarioForm(forms.Form):
+
     username = forms.CharField(
         label="Nombre de Usuario",
         max_length=150,
@@ -60,3 +61,18 @@ class AgregarColaboradorPorUsuarioForm(forms.Form):
         if not User.objects.filter(username=username).exists():
             raise forms.ValidationError("El usuario ingresado no existe.")
         return username
+    
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['texto']
+        widgets = {
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Escribe tu comentario aquí...'
+            }),
+        }
+        labels = {
+            'texto': 'Comentario'
+        }

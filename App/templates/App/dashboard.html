@@ -12,7 +12,14 @@
         <a href="{% url 'lista_usuarios' %}" class="btn btn-info">📋 Ver Lista de Usuarios</a>
     </div>
     {% endif %}
-    
+
+    <!-- Botón para Crear un Nuevo Espacio de Trabajo -->
+    {% if user.is_authenticated %}
+    <div class="mb-4">
+        <a href="{% url 'crear_espacio' %}" class="btn btn-success">➕ Crear Espacio de Trabajo</a>
+    </div>
+    {% endif %}
+
     <div class="row">
         {% for espacio in espacios %}
         <div class="col-md-4 mb-4">

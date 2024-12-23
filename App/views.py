@@ -1,17 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
 from .models import EspacioTrabajo, Proyecto, Tarea
 from django.db.models import Q  
 from django.views.generic import DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .forms import EspacioTrabajoForm, ProyectoForm, TareaForm,AgregarColaboradorPorUsuarioForm
+from .forms import EspacioTrabajoForm, ProyectoForm, TareaForm,AgregarColaboradorPorUsuarioForm, ComentarioForm
 from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
 from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
-
-
 
 
 
@@ -50,6 +48,11 @@ class EspacioDetalleView(LoginRequiredMixin, DetailView):
     template_name = "app/espacio_detalle.html"
     context_object_name = "espacio"
 
+    def dispatch(self, request, *args, **kwargs):
+            espacio = self.get_object()
+            if espacio.administrador != request.user and request.user not in espacio.colaboradores.all():
+                return render(request, 'App/403.html', status=403)
+            return super().dispatch(request, *args, **kwargs)
 
 
 class CrearEspacioView(LoginRequiredMixin, CreateView):
@@ -69,6 +72,12 @@ class CrearProyectoView(LoginRequiredMixin, CreateView):
     form_class = ProyectoForm
     template_name = "app/crear_proyecto.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        espacio = EspacioTrabajo.objects.get(pk=self.kwargs['espacio_id'])
+        if espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         # Vincular el proyecto al espacio de trabajo actual
         espacio = EspacioTrabajo.objects.get(pk=self.kwargs['espacio_id'])
@@ -83,6 +92,13 @@ class CrearTareaView(LoginRequiredMixin, CreateView):
     model = Tarea
     form_class = TareaForm
     template_name = "app/crear_tarea.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        proyecto = Proyecto.objects.get(pk=self.kwargs['proyecto_id'])
+        if proyecto.espacio.administrador != request.user:
+            return render(request, 'App/403.html', status=403)
+        return super().dispatch(request, *args, **kwargs)
+    
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -102,8 +118,42 @@ class CrearTareaView(LoginRequiredMixin, CreateView):
 
 class ProyectoDetalleView(LoginRequiredMixin, DetailView):
     model = Proyecto
-    template_name = "app/proyecto_detalle.html"
+    template_name = "App/proyecto_detalle.html"
     context_object_name = "proyecto"
+
+    def dispatch(self, request, *args, **kwargs):
+        proyecto = self.get_object()
+        espacio = proyecto.espacio
+        
+        # Verificar si el usuario es administrador del espacio o colaborador del proyecto
+        if request.user != espacio.administrador and request.user not in espacio.colaboradores.all():
+            return render(request, 'App/403.html', status=403)
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tareas = self.object.tareas.all()
+        for tarea in tareas:
+            # Añadir comentarios ordenados y el formulario en el contexto
+            tarea.comentarios_ordenados = tarea.comentarios.all().order_by('-fecha_creacion')
+            tarea.comentario_form = ComentarioForm()
+        context['tareas'] = tareas
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        tarea_id = request.POST.get('tarea_id')
+        tarea = Tarea.objects.get(id=tarea_id)
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.tarea = tarea
+            comentario.autor = request.user
+            comentario.save()
+            return redirect('proyecto_detalle', pk=self.object.pk)
+        return self.get(request, *args, **kwargs)
 
 class EditarTareaView(LoginRequiredMixin, UpdateView):
     model = Tarea

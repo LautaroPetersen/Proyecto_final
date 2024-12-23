@@ -19,25 +19,51 @@
     <!-- Lista de Tareas -->
     <h3 class="mt-4">Tareas</h3>
     <ul class="list-group">
-        {% for tarea in proyecto.tareas.all %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-                <h5>{{ tarea.nombre }}</h5>
-                <p>{{ tarea.descripcion }}</p>
-                <small class="text-muted">Estado: {{ tarea.estado }}</small>
-                <small class="text-muted d-block">Vencimiento: {{ tarea.fecha_vencimiento|date:"d M Y" }}</small>
-                {% if tarea.asignado_a %}
-                <small class="text-muted">Asignado a: {{ tarea.asignado_a.username }}</small>
+        {% for tarea in tareas %}
+        <li class="list-group-item">
+            <h5>{{ tarea.nombre }}</h5>
+            <p>{{ tarea.descripcion }}</p>
+            <small class="text-muted">Estado: {{ tarea.estado }}</small>
+            <small class="text-muted d-block">Vencimiento: {{ tarea.fecha_vencimiento|date:"d M Y" }}</small>
+            {% if tarea.asignado_a %}
+            <small class="text-muted">Asignado a: {{ tarea.asignado_a.username }}</small>
+            {% endif %}
+
+            <div class="mt-3">
+                {% if proyecto.espacio.administrador == user or tarea.asignado_a == user %}
+                <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-warning">Editar</a>
+                {% endif %}
+                {% if proyecto.espacio.administrador == user %}
+                <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-sm btn-danger">Eliminar</a>
                 {% endif %}
             </div>
-            <div>
-                <!-- Botón para Editar -->
-                <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-warning btn-sm me-2">Editar</a>
 
-                <!-- Botón para Eliminar (Redirige a Confirmación) -->
-                <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+            <!-- Comentarios de la Tarea -->
+            <h6 class="mt-3">Comentarios:</h6>
+            <div class="mt-2">
+                {% for comentario in tarea.comentarios_ordenados %}
+                <div class="mb-2 p-2 border rounded bg-light">
+                    <p><strong>{{ comentario.autor.username }}</strong> - {{ comentario.fecha_creacion|date:"d M Y H:i" }}</p>
+                    <p>{{ comentario.texto }}</p>
+                </div>
+                {% empty %}
+                <p>No hay comentarios en esta tarea.</p>
+                {% endfor %}
             </div>
+
+            <!-- Formulario de Comentarios -->
+            {% if user.is_authenticated %}
+            <form method="POST" class="mt-3">
+                {% csrf_token %}
+                {{ tarea.comentario_form.as_p }}
+                <input type="hidden" name="tarea_id" value="{{ tarea.id }}">
+                <button type="submit" class="btn btn-primary btn-sm">Agregar Comentario</button>
+            </form>
+            {% else %}
+            <p class="text-muted">Debes <a href="{% url 'login' %}">iniciar sesión</a> para agregar comentarios.</p>
+            {% endif %}
         </li>
+        <hr>
         {% empty %}
         <li class="list-group-item">No hay tareas en este proyecto.</li>
         {% endfor %}
