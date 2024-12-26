@@ -162,8 +162,11 @@ class EditarTareaView(LoginRequiredMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         tarea = self.get_object()
-        # Verificar si el usuario es el dueño del proyecto asociado
-        if tarea.proyecto.espacio.administrador != request.user:
+        # Verificar si el usuario es el administrador del espacio o el asignado a la tarea
+        if (
+            tarea.proyecto.espacio.administrador != request.user 
+            and tarea.asignado_a != request.user
+        ):
             return render(request, 'App/403.html', status=403)
         return super().dispatch(request, *args, **kwargs)
 
